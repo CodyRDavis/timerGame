@@ -14,18 +14,67 @@ var rooms = {
                 key: "BlankRoom"
             }
         ]
+    },
+    blankroom: {
+        name: "blank",
+        description: "its a blank room with nothing in it",
+        image: "blank",
+        //choices defines which rooms player can access from this room
+        choices: [
+            {
+                name: "Go through the blue door",
+                key: "blueroom"
+            },
+            {
+                name: 'Go through the red door',
+                key: "redroom"
+            }
+        ]
+    },
+    redroom: {
+        name: "prototype room 1",
+        description: "its a red room",
+        image: "redroom.png",
+        //choices defines which rooms player can access from this room
+        choices: [
+            {
+                name: "The white looking room",
+                key: "blankroom"
+            },
+            {
+                name: 'The room with the blue wall',
+                key: "blueroom"
+            }
+        ]
+    },
+    blueroom: {
+        name: "Blue Room",
+        description: "its a blank room with nothing in it",
+        image: "blueroom.jpg",
+        //choices defines which rooms player can access from this room
+        choices: [
+            {
+                name: "go back into the white room",
+                key: "blankroom"
+            },
+            {
+                name: 'go through the door into the red room',
+                key: "redroom"
+            }
+        ]
     }
 }
 var player = {
-    whatRoom: "BlankRoom"
+    whatRoom: "blankroom"
 }
 
 function playerUpdate() {
-    var destination = this.id;
 
+    var destination = this.id;
     console.log("destination: "+destination);
-    //player.whatRoom = destination;
-    //drawRoom();
+    player.whatRoom = destination;
+    drawRoom();
+    eventChecker();
 }
 
 function drawRoom(){
@@ -33,12 +82,17 @@ function drawRoom(){
     var roomName = document.getElementById('roomName');
     var roomDescription = document.getElementById('roomDescription');
     var navigationOptions = document.getElementById('pathOptions');
+    var htmlRoomImage = document.getElementById('roomImage');
 
     var currentRoom = rooms[player.whatRoom];
 
     //updating the text on gameboard
     roomName.textContent= currentRoom.name;
-    roomDescription = currentRoom.description;
+    roomDescription.textContent = currentRoom.description;
+    var image = document.createElement("img");
+    image.setAttribute('src', './assets/images/'+currentRoom.image);
+    htmlRoomImage.innerHTML = "";
+    htmlRoomImage.appendChild(image);
 
     var list = document.createElement("ul");
     for (var option in currentRoom.choices) {
@@ -54,4 +108,7 @@ function drawRoom(){
     navigationOptions.append(list);
 };
 
+function eventChecker(){
+    //check to see if we are in special rooms and do things not normal to the navigation
+}
 drawRoom();
