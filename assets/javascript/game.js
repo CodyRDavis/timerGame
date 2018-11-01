@@ -82,17 +82,14 @@ function drawRoom(){
     var roomName = document.getElementById('roomName');
     var roomDescription = document.getElementById('roomDescription');
     var navigationOptions = document.getElementById('pathOptions');
-    var htmlRoomImage = document.getElementById('roomImage');
+    var roomImage = document.getElementById('roomImage');
 
     var currentRoom = rooms[player.whatRoom];
 
     //updating the text on gameboard
     roomName.textContent= currentRoom.name;
     roomDescription.textContent = currentRoom.description;
-    var image = document.createElement("img");
-    image.setAttribute('src', './assets/images/'+currentRoom.image);
-    htmlRoomImage.innerHTML = "";
-    htmlRoomImage.appendChild(image);
+    roomImage.setAttribute('src', './assets/images/'+currentRoom.image);
 
     var list = document.createElement("ul");
     for (var option in currentRoom.choices) {

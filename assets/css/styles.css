@@ -1,0 +1,44 @@
+body{
+    background-color: #3c3c3c;
+    color: white;
+}
+
+.center {
+    margin: 0 auto;
+}
+.text-center {
+    text-align: center;
+}
+.wrapper {
+    width: 700px;
+}
+#roomName {
+    font-size: 3rem;
+    padding: 16px;
+
+}
+#roomImage {
+    height: 350px;
+    width: 350px;
+    border: 3px solid white;
+    border-radius: 20px;
+    margin: 16px;
+    box-shadow: 5px 5px 20px #111111aa;
+}
+
+#pathOptions ul {
+    list-style-type: none;
+}
+
+#pathOptions li {
+    font-size: 1.2rem;
+    margin: 16px;
+    padding: 8px;
+    background-color: #666;
+    border: 1px solid #666;
+    border-radius: 20px;
+}
+
+#pathOptions li:hover {
+    background-color: #aaa;
+}
