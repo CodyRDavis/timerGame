@@ -1,24 +1,10 @@
 //object holding all the rooms and their values
 var rooms = {
-    BlankRoom: {
-        name: "blank",
-        description: "its a blank room with nothing in it",
-        //choices defines which rooms player can access from this room
-        choices: [
-            {
-                name: "Blank Room",
-                key: "BlankRoom"
-            },
-            {
-                name: 'Blank Hallway',
-                key: "BlankRoom"
-            }
-        ]
-    },
     blankroom: {
         name: "blank",
         description: "its a blank room with nothing in it",
         image: "blank",
+        requiredItem: "none",
         //choices defines which rooms player can access from this room
         choices: [
             {
@@ -32,9 +18,10 @@ var rooms = {
         ]
     },
     redroom: {
-        name: "prototype room 1",
-        description: "its a red room",
+        name: "Red Room",
+        description: "its a red room...with lots of red things...tacky",
         image: "redroom.png",
+        requiredItem: "none",
         //choices defines which rooms player can access from this room
         choices: [
             {
@@ -44,13 +31,31 @@ var rooms = {
             {
                 name: 'The room with the blue wall',
                 key: "blueroom"
+            },
+            {
+                name: 'pick up the blue key on the floor.',
+                key: 'getBlueKey'
+            }
+        ]
+    },
+    getBlueKey: {
+        name: "Red Room",
+        description: "you pick up the blueKey. it feels cool.",
+        image: "redroom.png",
+        requiredItem: "none",
+        //choices defines which rooms player can access from this room
+        choices: [
+            {
+                name: "go back....",
+                key: "redroom"
             }
         ]
     },
     blueroom: {
         name: "Blue Room",
-        description: "its a blank room with nothing in it",
+        description: "its a realy really blue room with nothing in it",
         image: "blueroom.jpg",
+        requiredItem: "bluekey",
         //choices defines which rooms player can access from this room
         choices: [
             {
@@ -65,16 +70,26 @@ var rooms = {
     }
 }
 var player = {
-    whatRoom: "blankroom"
+    whatRoom: "blankroom",
+    none: true,
+    bluekey: false,
+    "skullkey": false,
+    "rustykey": false,
 }
 
 function playerUpdate() {
 
     var destination = this.id;
-    console.log("destination: "+destination);
-    player.whatRoom = destination;
-    drawRoom();
-    eventChecker();
+    requiredItems = rooms[destination].requiredItem;
+    console.log("this room requires: " + requiredItems);
+    console.log(player[requiredItems]);
+    if (player[requiredItems]){
+        console.log("destination: "+destination);
+        player.whatRoom = destination;
+        drawRoom();
+        eventChecker();
+    }
+        
 }
 
 function drawRoom(){
@@ -106,6 +121,9 @@ function drawRoom(){
 };
 
 function eventChecker(){
-    //check to see if we are in special rooms and do things not normal to the navigation
+   if (player.destination == getBlueKey){
+       player.bluekey = true;
+   }
 }
+
 drawRoom();
