@@ -79,8 +79,9 @@ var rooms = {
             }
         ]//end of choices
     }
-}//end of all the rooms
+};//end of all the rooms
 
+//keeps track of players inventory and where player is.
 var player = {
     whatRoom: "bedroom",
     //flags for special events
@@ -91,13 +92,16 @@ var player = {
     none: true,
     bedroomKey: false,
 
-}
+};//end player
 
+//path variables for easier calls in functions.
 var roomName = document.getElementById('roomName');
 var roomDescription = document.getElementById('roomDescription');
 var navigationOptions = document.getElementById('pathOptions');
 var roomImage = document.getElementById('roomImage');
 
+
+//changed which room player is currenly associated with and checks to see if player can enter the room selected.
 function playerUpdate() {
 
     var destination = this.id;
@@ -112,8 +116,9 @@ function playerUpdate() {
     }
     console.log (player);
         
-}
+};//end playerUpdate
 
+//updates the html Roomname, photo, description, and the basic and always available navigation options
 function drawRoom(){
     //variables for ease of reading
     // var roomName = document.getElementById('roomName');
@@ -141,8 +146,10 @@ function drawRoom(){
     }
     navigationOptions.innerHTML = "";//clears out anything there
     navigationOptions.append(list);
-};
+};//end drawRoom
 
+
+//checking to see if special conditions exist to display opitions to the user that might not always be available.
 function eventChecker(){
     var currentLocation = player.whatRoom;
     if(currentLocation == "onBed" && !player.note){//checking to see if player has the note from the bed yet
@@ -152,8 +159,9 @@ function eventChecker(){
     if(currentLocation == "bedroom" && !player.awake){
         roomDescription.textContent = "Hm...ugh... my head is killing me. Where am I? This bedroom doesnt look familiar to me...";
     }
-}
+};//end eventChucker
 
+//function to create an LI and add it to navigation options. intended to be used with eventchecker.
 function drawSpecialEvent(text, id) {
     var availableOption = document.createElement("li")
     availableOption.textContent = text;
@@ -161,8 +169,11 @@ function drawSpecialEvent(text, id) {
     //adding in click listener and adding it to the option. the key is the name of the room that can be found in Rooms Object.
     availableOption.addEventListener("click", playerUpdate);
     document.getElementById('nav').appendChild(availableOption);
-}
+};//end drawSpecialEvent
 
+
+//updates the screen when called to the game over screen, removes navigation options
+//resets the player object so when the game starts over it will be a fresh instance.
 function gameover() {
 
     var availableOption = document.createElement("li")
@@ -180,12 +191,13 @@ function gameover() {
     player.note = false;
     player.none = true;
     player.bedroomKey = false;
-}
+}; //end gameOver
 
+//calls all functions that need to run on load.
 function startGame() {
     drawRoom();
     eventChecker();
     setTimeout(gameover, 50 * 1000);
-}
+}; //end startGame();
 
 startGame();
