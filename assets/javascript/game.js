@@ -5,6 +5,7 @@ var rooms = {
         description: "It's an old musty bedroom. it looks like the bed has some stains on it...is that blood?",
         image: "bedroom.jpg", //TODO
         requiredItem: "none",
+        note: true,
         //choices defines which rooms player can access from this room
         choices: [
             {
@@ -28,8 +29,7 @@ var rooms = {
         requiredItem: "none",
         choices: [
             {
-                name: "Go back to the bedroom",
-                key: "bedroom"
+                name: "Go back to the bedroom", key: "bedroom"
             }
         ]
     },
@@ -40,16 +40,26 @@ var rooms = {
         image: "underbed.jpg", //TODO
         requiredItem: "none",
         choices: [
-            {
-                name: "Get out from under the bed.",
-                key: "bedroom"
-            }
+            { name: "Get out from under the bed.", key: "bedroom"},
+            { name: "Check the bottom of the matress", key: "holeInMatress"}
         ]
     },
-    onBed: {
+    holeInMatress: {
+        name: "Looking under the Bed",
+        description: "weird, the matress has a hole in it...",
+        image: "underbed.jpg", //TODO
+        requiredItem: "none",
+        choices: [
+            {
+                name: "go back",key: "underbed"
+            }
+        ]//end of choices
+    },//end of room
+    onBed: 
+    {
         name: "Looking at the bed",
         description: "This bed has a big stain on it... gross",
-        image: "../images/bedroom.jpg", //TODO
+        image: "bedroom.jpg", //TODO
         requiredItem: "none",
         choices: [
             {
@@ -71,14 +81,42 @@ var rooms = {
     hallwayBedroom: {
         name: "Hallway just outside the bedroom",
         description: "The light in the hallway is out, it's hard to see. I hope nothing is out here.",
-        image: "hallway.jpg", //TODO
+        image: "hallway.jpg",
         requiredItem: "bedroomKey",
         choices: [
-            {
-                name: "Open the door to the bedroom",key: "bedroom"
-            }
+            {name: "Open the door to the bedroom", key: "bedroom"},
+            {name: "Go down stairs", key: "livingRoom"}
+        ]//end of choices
+    },
+    livingRoom:{
+        name: "Livingroom",
+        description: "Ugh- it's as gross in here as the rest of the house. who could live in a place like this? Forget I asked, I need to get out of here.",
+        image: "livingroom.png", //TODO
+        requiredItem: "none",
+        choices: [
+            {name: "Go Upstairs", key: "hallwayBedRoom"},
+            {name: "Go to Entry", key: "entry"}
+        ]//end of choices
+    },
+    entry: {
+        name: "Entry",
+        description: "Finally In the entry. I can actually see outside.",
+        image: "entry.jpg", //TODO
+        requiredItem: "none",
+        choices: [
+            {name: "Go back to the livingroom", key: "livingRoom"},
+            {name: "Go Outside", key: "outside"}
+        ]//end of choices
+    },
+    outside: {
+        name: "Outside",
+        description: "Finally I'm out of that house. I have no idea how I got there, or what was going on. That was probably the creepiest place I have ever been. I have more questions than I have answers...",
+        image: "outside.jpg", //TODO
+        requiredItem: "none",
+        choices: [
         ]//end of choices
     }
+
 };//end of all the rooms
 
 //keeps track of players inventory and where player is.
@@ -99,7 +137,7 @@ var roomName = document.getElementById('roomName');
 var roomDescription = document.getElementById('roomDescription');
 var navigationOptions = document.getElementById('pathOptions');
 var roomImage = document.getElementById('roomImage');
-
+var gameoverClock;
 
 //changed which room player is currenly associated with and checks to see if player can enter the room selected.
 function playerUpdate() {
@@ -152,12 +190,24 @@ function drawRoom(){
 //checking to see if special conditions exist to display opitions to the user that might not always be available.
 function eventChecker(){
     var currentLocation = player.whatRoom;
+    if(currentLocation == "noteOnBed") {
+        document.getElementById('clock').style.opacity = 1;
+    }
     if(currentLocation == "onBed" && !player.note){//checking to see if player has the note from the bed yet
         drawSpecialEvent("Take the note off the bed.", "noteOnBed");
+    }
+    if (currentLocation == "noteOnBed"){
         player.note = true;
     }
     if(currentLocation == "bedroom" && !player.awake){
         roomDescription.textContent = "Hm...ugh... my head is killing me. Where am I? This bedroom doesnt look familiar to me...";
+    }
+    if(currentLocation == "holeInMatress" && !player.bedroomKey){
+        roomDescription.textContent = "Weird- why is there a key stuffed in the hole?"
+        player.bedroomKey = true;
+    }
+    if(currentLocation == 'outside'){
+        clearTimeout(gameoverClock);
     }
 };//end eventChucker
 
@@ -197,7 +247,33 @@ function gameover() {
 function startGame() {
     drawRoom();
     eventChecker();
-    setTimeout(gameover, 50 * 1000);
+    gameoverClock = setTimeout(gameover, 60 * 1000);
+    gameoverClock;
+    clock();
 }; //end startGame();
+
+function clock() {
+    var time = 0;
+        setInterval(updateClock, 1 * 1000);
+
+    function updateClock() {
+        if (time <= 59){
+          time ++;
+            if (time<10){
+                document.getElementById('clock').innerText = "11:0"+time;
+            }
+            else if (time<60){
+                document.getElementById('clock').innerText = "11:"+time;
+            }
+            else {
+                document.getElementById('clock').innerText = "12:00";
+            }
+            
+            console.log(time);  
+        }
+        
+    }
+
+}
 
 startGame();

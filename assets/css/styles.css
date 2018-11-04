@@ -18,6 +18,13 @@ li {
 .wrapper {
     width: 700px;
 }
+
+#clock {
+    color: #00ff00;
+    font-size: 3rem;
+    text-align: center;
+    opacity: 0;
+}
 #roomName {
     font-size: 3rem;
     padding: 16px;
